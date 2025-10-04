@@ -1,0 +1,20 @@
+{
+  "name": "ppt-game",
+  "version": "1.0.0",
+  "description": "Rock Paper Scissors game built with TypeScript and Parcel.",
+  "homepage": "https://JorgeAA78.github.io/gh-page-ppt",
+  "scripts": {
+    "dev": "parcel src/index.html --open",
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html --public-url ./",
+    "deploy": "gh-pages -d dist",
+    "build-and-deploy": "npm run build && npm run deploy"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.6.2",
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.16.0",
+    "typescript": "^5.9.3"
+  }
+}

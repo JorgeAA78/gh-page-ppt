@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: 'Odibee Sans', cursive;
+  background-color: #f0f0f0;
+}
+
+#root {
+  max-width: 375px;
+  margin: 0 auto;
+  height: 100vh;
+  background-image: url('../soporte/fondo.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+}
