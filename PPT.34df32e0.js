@@ -765,8 +765,13 @@ const routes = [
     }
 ];
 function initRouter(container) {
+    const basePath = "/gh-page-ppt";
+    function isGithubPages() {
+        return location.host.includes("github.io");
+    }
     function goTo(path) {
-        history.pushState({}, '', path);
+        const completePath = isGithubPages() ? `${basePath}${path}` : path;
+        history.pushState({}, "", completePath);
         handleRoute(path);
     }
     function handleRoute(path) {
@@ -788,14 +793,20 @@ function initRouter(container) {
             }
             if (root.firstChild) root.firstChild.remove();
             root.appendChild(el);
+            return; // Termina la función una vez que se encuentra la ruta
         }
+        // Si ninguna ruta coincide, redirige a welcome
+        goTo("/welcome");
     }
-    if (location.pathname === '/') {
-        history.replaceState({}, '', '/welcome');
-        handleRoute('/welcome');
-    } else handleRoute(location.pathname);
+    function processPath(path) {
+        if (isGithubPages() && path.startsWith(basePath)) return path.substring(basePath.length) || "/";
+        return path;
+    }
+    // Manejo de la ruta inicial
+    handleRoute(processPath(location.pathname));
+    // Manejo de la navegación hacia atrás/adelante
     window.onpopstate = ()=>{
-        handleRoute(location.pathname);
+        handleRoute(processPath(location.pathname));
     };
 }
 
