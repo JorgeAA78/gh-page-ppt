@@ -1,4 +1,4 @@
-# Piedra, Papel o Tijera (Rock, Paper, Scissors)
+# Piedra, Papel o Tijera 
 
 Este es un juego clásico de Piedra, Papel o Tijera construido con TypeScript y Parcel.
 
