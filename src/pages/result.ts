@@ -2,6 +2,7 @@ import { state } from '../state/state';
 const ganasteImg = require("url:../../soporte/ganaste.png");
 const perdisteImg = require("url:../../soporte/perdiste.png");
 const lluviaGif = require("url:../../soporte/lluvia.gif");
+const winSound = require("url:../../soporte/ganaste.mp3"); // Placeholder, please provide the correct filename
 
 export function initResultPage(params: { goTo: (path: string) => void }) {
   const div = document.createElement('div');
@@ -19,6 +20,8 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
     buttonText = 'Jugar de Nuevo';
     finalResult = true;
     resultText = '¡Ganaste la partida!';
+    const audio = new Audio(winSound);
+    audio.play();
   } else if (computerWins) {
     resultImg = perdisteImg;
     buttonText = 'Jugar de Nuevo';

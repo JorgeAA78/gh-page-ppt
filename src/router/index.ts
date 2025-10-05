@@ -47,10 +47,10 @@ export function initRouter(container: Element) {
           root.firstChild.remove();
         }
         root.appendChild(el);
-        return; // Termina la función una vez que se encuentra la ruta
+        return;
       }
     }
-    // Si ninguna ruta coincide, redirige a welcome
+    // If no route is matched, go to /welcome. This is especially important for the initial load on GitHub Pages.
     goTo("/welcome");
   }
 
