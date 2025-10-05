@@ -6,6 +6,7 @@ const winSound = require("url:../../soporte/ganaste.mp3"); // Placeholder, pleas
 
 export function initResultPage(params: { goTo: (path: string) => void }) {
   const div = document.createElement('div');
+  let audio: HTMLAudioElement | null = null;
   const currentState = state.getState();
   const playerWins = currentState.history.player >= 3;
   const computerWins = currentState.history.computer >= 3;
@@ -20,7 +21,7 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
     buttonText = 'Jugar de Nuevo';
     finalResult = true;
     resultText = '¡Ganaste la partida!';
-    const audio = new Audio(winSound);
+    audio = new Audio(winSound);
     audio.play();
   } else if (computerWins) {
     resultImg = perdisteImg;
@@ -108,6 +109,10 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
   const playAgainButton = div.querySelector('.play-again-button');
   if (playAgainButton) {
     playAgainButton.addEventListener('click', () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
       if (finalResult) {
         state.resetHistory();
       }
