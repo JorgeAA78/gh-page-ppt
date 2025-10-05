@@ -738,23 +738,23 @@ var _showdown = require("../pages/showdown");
 var _state = require("../state/state");
 const routes = [
     {
-        path: /\/welcome/,
+        path: /^\/welcome$/,
         component: (0, _welcome.initWelcomePage)
     },
     {
-        path: /\/instructions/,
+        path: /^\/instructions$/,
         component: (0, _instructions.initInstructionsPage)
     },
     {
-        path: /\/play/,
+        path: /^\/play$/,
         component: (0, _play.initPlayPage)
     },
     {
-        path: /\/showdown/,
+        path: /^\/showdown$/,
         component: (0, _showdown.initShowdownPage)
     },
     {
-        path: /\/result/,
+        path: /^\/result$/,
         component: (0, _result.initResultPage),
         background: 'solid'
     }
@@ -786,17 +786,19 @@ function initRouter(container) {
             }
             if (root.firstChild) root.firstChild.remove();
             root.appendChild(el);
-            return; // Termina la función una vez que se encuentra la ruta
+            return;
         }
-        // Si ninguna ruta coincide, redirige a welcome
+        // If no route is matched, it's a 404, redirect to welcome
+        console.error('404 - Route not found:', path);
         goTo("/welcome");
     }
     function processPath(path) {
         if (isGithubPages() && path.startsWith(basePath)) return path.substring(basePath.length) || "/";
         return path;
     }
-    // Manejo de la ruta inicial
-    handleRoute(processPath(location.pathname));
+    // Initial route handling
+    if (location.pathname === "/" || location.pathname.endsWith('/gh-page-ppt/')) goTo("/welcome");
+    else handleRoute(processPath(location.pathname));
     // Manejo de la navegación hacia atrás/adelante
     window.onpopstate = ()=>{
         handleRoute(processPath(location.pathname));

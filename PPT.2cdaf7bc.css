@@ -1,9 +1,14 @@
+html, body {
+  height: 100%;
+}
+
 body {
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   background-image: url("fondo.b4b7940b.png");
   background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   margin: 0;
