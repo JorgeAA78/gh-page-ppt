@@ -82,6 +82,13 @@ const state = {
     }
     this.setState(currentState);
   },
+
+  resetHistory() {
+    const currentState = this.getState();
+    currentState.history.player = 0;
+    currentState.history.computer = 0;
+    this.setState(currentState);
+  },
 };
 
 export { state };

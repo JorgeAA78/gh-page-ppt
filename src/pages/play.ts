@@ -13,11 +13,11 @@ export function initPlayPage(params: { goTo: (path: string) => void }) {
     if (countdown < 0) {
       clearInterval(intervalId);
       // Si el jugador no eligió, vuelve a las instrucciones
+      // Si el jugador no eligió, la computadora elige por él y continúa
       if (state.getState().currentGame.playerPlay === "") {
-        params.goTo('/instructions');
-      } else {
-        params.goTo('/showdown');
+        state.setPlayerMove(""); // Esto hará que la computadora elija una jugada
       }
+      params.goTo('/showdown');
     }
   };
 
@@ -122,10 +122,16 @@ export function initPlayPage(params: { goTo: (path: string) => void }) {
   hands.forEach(hand => {
     hand.addEventListener('click', () => {
       const type = hand.getAttribute('type');
-      state.setPlayerMove(type as any);
-      
-      hands.forEach(h => h.classList.remove('selected'));
-      hand.classList.add('selected');
+      if (type) {
+        state.setPlayerMove(type as any);
+        hands.forEach(h => h.classList.remove('selected'));
+        hand.classList.add('selected');
+        // Detener el temporizador y navegar
+        clearInterval(intervalId);
+        setTimeout(() => {
+          params.goTo('/showdown');
+        }, 500); // Pequeña demora para que el jugador vea la selección
+      }
       
     });
   });

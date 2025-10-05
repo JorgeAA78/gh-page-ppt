@@ -38,7 +38,6 @@ export function initRouter(container: Element) {
           const result = state.whoWins(state.getState().currentGame.playerPlay, state.getState().currentGame.computerPlay);
           if (result === 'win') root.style.backgroundColor = '#888949';
           if (result === 'loss') root.style.backgroundColor = '#894949';
-          if (result === 'tie') root.style.backgroundColor = '#D5D588';
           root.style.backgroundImage = 'none';
         } else {
           root.style.backgroundImage = r.background;

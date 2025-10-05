@@ -1,37 +1,50 @@
 import { state } from '../state/state';
 const ganasteImg = require("url:../../soporte/ganaste.png");
 const perdisteImg = require("url:../../soporte/perdiste.png");
-const empateImg = require("url:../../soporte/empate.png");
+const lluviaGif = require("url:../../soporte/lluvia.gif");
 
 export function initResultPage(params: { goTo: (path: string) => void }) {
   const div = document.createElement('div');
   const currentState = state.getState();
-  const result = state.whoWins(currentState.currentGame.playerPlay, currentState.currentGame.computerPlay);
+  const playerWins = currentState.history.player >= 3;
+  const computerWins = currentState.history.computer >= 3;
 
   let resultImg = '';
-  let resultClass = '';
-  if (result === 'win') {
+  let buttonText = 'Siguiente Ronda';
+  let finalResult = false;
+  let resultText = '';
+
+  if (playerWins) {
     resultImg = ganasteImg;
-    resultClass = 'win';
-  }
-  if (result === 'loss') {
+    buttonText = 'Jugar de Nuevo';
+    finalResult = true;
+    resultText = '¡Ganaste la partida!';
+  } else if (computerWins) {
     resultImg = perdisteImg;
-    resultClass = 'loss';
-  }
-  if (result === 'tie') {
-    resultImg = empateImg;
-    resultClass = 'tie';
+    buttonText = 'Jugar de Nuevo';
+    finalResult = true;
+    resultText = 'Perdiste la partida';
+  } else {
+    const roundResult = state.whoWins(currentState.currentGame.playerPlay, currentState.currentGame.computerPlay);
+    if (roundResult === 'win') {
+      resultImg = ganasteImg;
+      resultText = 'Ganaste esta ronda';
+    } else {
+      resultImg = perdisteImg;
+      resultText = 'Perdiste esta ronda';
+    }
   }
 
   div.innerHTML = `
+    ${(playerWins && finalResult) ? `<img class="confetti" src="${lluviaGif}" alt="confetti">` : ''}
     <div class="result-container">
-      <img class="result-image" src="${resultImg}" alt="Resultado: ${result}">
+      <img class="result-image" src="${resultImg}" alt="${resultText}">
       <div class="score-board">
         <h2 class="score-title">Score</h2>
         <p class="score-p">Vos: ${currentState.history.player}</p>
         <p class="score-p">Máquina: ${currentState.history.computer}</p>
       </div>
-      <button-el class="play-again-button">Volver a Jugar</button-el>
+      <button-el class="play-again-button">${buttonText}</button-el>
     </div>
   `;
 
@@ -39,6 +52,8 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
   const style = document.createElement('style');
   style.innerHTML = `
     .result-container {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,6 +89,15 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
     .play-again-button {
       width: 260px;
     }
+    .confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
   `;
 
   div.appendChild(style);
@@ -81,7 +105,10 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
   const playAgainButton = div.querySelector('.play-again-button');
   if (playAgainButton) {
     playAgainButton.addEventListener('click', () => {
-      params.goTo('/instructions');
+      if (finalResult) {
+        state.resetHistory();
+      }
+      params.goTo('/play');
     });
   }
 

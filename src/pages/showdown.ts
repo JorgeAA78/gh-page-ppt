@@ -37,8 +37,13 @@ export function initShowdownPage(params: { goTo: (path: string) => void }) {
   div.appendChild(style);
 
   setTimeout(() => {
-    params.goTo('/result');
-  }, 3000); 
+    const result = state.whoWins(playerMove, computerMove);
+    if (result === 'tie') {
+      params.goTo('/play');
+    } else {
+      params.goTo('/result');
+    }
+  }, 2000); 
 
   return div;
 }
