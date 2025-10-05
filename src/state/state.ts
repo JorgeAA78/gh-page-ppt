@@ -23,10 +23,7 @@ const state = {
   listeners: [] as Function[],
 
   init() {
-    const localData = localStorage.getItem("saved-state");
-    if (localData) {
-      this.data.history = JSON.parse(localData);
-    }
+    // Score is no longer loaded from localStorage to ensure it resets on every new session.
   },
 
   getState() {
@@ -38,7 +35,7 @@ const state = {
     for (const cb of this.listeners) {
       cb();
     }
-    localStorage.setItem("saved-state", JSON.stringify(this.data.history));
+    // localStorage.setItem("saved-state", JSON.stringify(this.data.history)); // Removed to prevent score persistence.
     console.log("State updated:", this.data);
   },
 

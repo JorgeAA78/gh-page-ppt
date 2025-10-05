@@ -1,7 +1,10 @@
 body {
   margin: 0;
   font-family: 'Odibee Sans', cursive;
-  background-color: #f0f0f0;
+  background-image: url('../soporte/fondo.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10+ */
   user-select: none; /* Standard syntax */
@@ -13,10 +16,6 @@ body {
   max-width: 375px;
   margin: 0 auto;
   height: 100vh;
-  background-image: url('../soporte/fondo.png');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
