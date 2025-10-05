@@ -5,13 +5,11 @@ import { initResultPage } from '../pages/result';
 import { initShowdownPage } from '../pages/showdown';
 import { state } from '../state/state';
 
-const fondo = require("url:../../soporte/fondo.png");
-
 const routes = [
-  { path: /\/welcome/, component: initWelcomePage, background: `url(${fondo})` },
-  { path: /\/instructions/, component: initInstructionsPage, background: `url(${fondo})` },
-  { path: /\/play/, component: initPlayPage, background: `url(${fondo})` },
-  { path: /\/showdown/, component: initShowdownPage, background: `url(${fondo})` },
+  { path: /\/welcome/, component: initWelcomePage },
+  { path: /\/instructions/, component: initInstructionsPage },
+  { path: /\/play/, component: initPlayPage },
+  { path: /\/showdown/, component: initShowdownPage },
   { path: /\/result/, component: initResultPage, background: 'solid' }, // 'solid' indica que el color depende del resultado
 ];
 
@@ -34,14 +32,15 @@ export function initRouter(container: Element) {
       if (r.path.test(path)) {
         const el = r.component({ goTo });
         const root = container as HTMLElement;
+
+        // Reset background styles before rendering the new page
+        root.style.backgroundImage = '';
+        root.style.backgroundColor = 'transparent';
+
         if (r.background === 'solid') {
           const result = state.whoWins(state.getState().currentGame.playerPlay, state.getState().currentGame.computerPlay);
           if (result === 'win') root.style.backgroundColor = '#888949';
           if (result === 'loss') root.style.backgroundColor = '#894949';
-          root.style.backgroundImage = 'none';
-        } else {
-          root.style.backgroundImage = r.background;
-          root.style.backgroundColor = 'transparent';
         }
 
         if (root.firstChild) {
