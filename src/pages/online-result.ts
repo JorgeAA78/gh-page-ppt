@@ -79,10 +79,10 @@ export function initOnlineResultPage(params: { goTo: (path: string) => void }) {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       height: 100%;
       width: 100%;
-      padding: 20px 0;
+      padding: 16px 0;
       box-sizing: border-box;
       text-align: center;
     }
@@ -119,6 +119,52 @@ export function initOnlineResultPage(params: { goTo: (path: string) => void }) {
       font-size: 18px;
       margin: 0;
       min-height: 22px;
+    }
+
+    @media (max-height: 740px) {
+      .result-container {
+        gap: 12px;
+        padding: 12px 0;
+      }
+      .result-title {
+        font-size: 46px;
+      }
+      .result-image {
+        width: 210px;
+      }
+      .score-board {
+        width: 300px;
+        border-width: 8px;
+        padding: 12px;
+      }
+      .score-title {
+        font-size: 44px;
+      }
+      .score-p {
+        font-size: 28px;
+      }
+      .play-again-button, .back-button {
+        width: 300px;
+      }
+      .match-text {
+        font-size: 16px;
+        min-height: 18px;
+      }
+    }
+
+    @media (max-height: 640px) {
+      .result-title {
+        font-size: 40px;
+      }
+      .result-image {
+        width: 180px;
+      }
+      .score-board {
+        width: 280px;
+      }
+      .play-again-button, .back-button {
+        width: 280px;
+      }
     }
     .confetti {
       position: absolute;

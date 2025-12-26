@@ -63,10 +63,10 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
       flex-direction: column;
       align-items: center;
       justify-content: center; /* Centra el grupo de elementos verticalmente */
-      gap: 20px; /* Añade un espacio de 20px entre cada elemento */
+      gap: 16px; /* Añade un espacio entre cada elemento */
       height: 100%;
       width: 100%;
-      padding: 20px 0;
+      padding: 16px 0;
       box-sizing: border-box;
     }
     .result-image {
@@ -96,6 +96,43 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
     }
     .menu-button {
       width: 260px;
+    }
+
+    @media (max-height: 740px) {
+      .result-container {
+        gap: 12px;
+        padding: 12px 0;
+      }
+      .result-image {
+        width: 210px;
+      }
+      .score-board {
+        width: 240px;
+        border-width: 8px;
+        padding: 12px;
+      }
+      .score-title {
+        font-size: 46px;
+      }
+      .score-p {
+        font-size: 34px;
+      }
+      .play-again-button,
+      .menu-button {
+        width: 240px;
+      }
+    }
+
+    @media (max-height: 640px) {
+      .result-image {
+        width: 180px;
+      }
+      .score-title {
+        font-size: 40px;
+      }
+      .score-p {
+        font-size: 30px;
+      }
     }
     .confetti {
       position: absolute;
