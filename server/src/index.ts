@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { nanoid } from "nanoid";
+import { randomUUID } from "crypto";
 import { getDatabase } from "./firebase";
 import { GameMove, whoWins } from "./game";
 
@@ -25,7 +25,7 @@ app.post("/api/users", asyncHandler(async (req: Request, res: Response) => {
   const { name } = req.body as { name?: string };
   if (!name) return res.status(400).json({ error: "name is required" });
 
-  const userId = nanoid();
+  const userId = randomUUID();
   const db = getDatabase();
   await db.ref(`users/${userId}`).set({ name, createdAt: Date.now() });
   res.json({ userId });
@@ -38,7 +38,7 @@ app.post("/api/rooms", asyncHandler(async (req: Request, res: Response) => {
 
   const db = getDatabase();
 
-  const roomId = nanoid();
+  const roomId = randomUUID();
   const shortCode = String(Math.floor(1000 + Math.random() * 9000));
 
   await db.ref(`roomCodes/${shortCode}`).set(roomId);
