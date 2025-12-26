@@ -9,3 +9,7 @@
 
 # Lockfiles
 yarn.lock
+
+# Backend secrets
+/server/.env
+/server/serviceAccountKey.json

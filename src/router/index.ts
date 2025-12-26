@@ -3,6 +3,12 @@ import { initInstructionsPage } from '../pages/instructions';
 import { initPlayPage } from '../pages/play';
 import { initResultPage } from '../pages/result';
 import { initShowdownPage } from '../pages/showdown';
+import { initOnlineMenuPage } from '../pages/online-menu';
+import { initOnlineNewRoomPage } from '../pages/online-new';
+import { initOnlineJoinRoomPage } from '../pages/online-join';
+import { initOnlineWaitingPage } from '../pages/online-waiting';
+import { initOnlinePlayPage } from '../pages/online-play';
+import { initOnlineResultPage } from '../pages/online-result';
 import { state } from '../state/state';
 
 const routes = [
@@ -11,6 +17,12 @@ const routes = [
   { path: /^\/play$/, component: initPlayPage },
   { path: /^\/showdown$/, component: initShowdownPage },
   { path: /^\/result$/, component: initResultPage, background: 'solid' },
+  { path: /^\/online$/, component: initOnlineMenuPage },
+  { path: /^\/online\/new$/, component: initOnlineNewRoomPage },
+  { path: /^\/online\/join$/, component: initOnlineJoinRoomPage },
+  { path: /^\/online\/waiting$/, component: initOnlineWaitingPage },
+  { path: /^\/online\/play$/, component: initOnlinePlayPage },
+  { path: /^\/online\/result$/, component: initOnlineResultPage },
 ];
 
 export function initRouter(container: Element) {

@@ -3,6 +3,7 @@ export function initWelcomePage(params: { goTo: (path: string) => void }) {
   div.innerHTML = `
     <h1 class="title">Piedra<br>Papel ó<br>Tijera</h1>
     <button-el class="start-button">Empezar</button-el>
+    <button-el class="online-button">Jugar online</button-el>
     <div class="hands-container">
       <hand-el type="tijera"></hand-el>
       <hand-el type="piedra"></hand-el>
@@ -32,6 +33,10 @@ export function initWelcomePage(params: { goTo: (path: string) => void }) {
       width: 100%;
       max-width: 322px;
     }
+    .online-button {
+      width: 100%;
+      max-width: 322px;
+    }
     .hands-container {
       display: flex;
       gap: 40px;
@@ -44,6 +49,13 @@ export function initWelcomePage(params: { goTo: (path: string) => void }) {
   if (startButton) {
     startButton.addEventListener('click', () => {
       params.goTo('/instructions');
+    });
+  }
+
+  const onlineButton = div.querySelector('.online-button');
+  if (onlineButton) {
+    onlineButton.addEventListener('click', () => {
+      params.goTo('/online');
     });
   }
 
