@@ -5,6 +5,14 @@ import { nanoid } from "nanoid";
 import { getDatabase } from "./firebase";
 import { GameMove, whoWins } from "./game";
 
+function asyncHandler(
+  fn: (req: Request, res: Response, next: (err?: any) => void) => Promise<any>
+) {
+  return (req: Request, res: Response, next: (err?: any) => void) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -13,7 +21,7 @@ app.get("/health", (_req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-app.post("/api/users", async (req: Request, res: Response) => {
+app.post("/api/users", asyncHandler(async (req: Request, res: Response) => {
   const { name } = req.body as { name?: string };
   if (!name) return res.status(400).json({ error: "name is required" });
 
@@ -21,9 +29,9 @@ app.post("/api/users", async (req: Request, res: Response) => {
   const db = getDatabase();
   await db.ref(`users/${userId}`).set({ name, createdAt: Date.now() });
   res.json({ userId });
-});
+}));
 
-app.post("/api/rooms", async (req: Request, res: Response) => {
+app.post("/api/rooms", asyncHandler(async (req: Request, res: Response) => {
   const { userId, name } = req.body as { userId?: string; name?: string };
   if (!userId) return res.status(400).json({ error: "userId is required" });
   if (!name) return res.status(400).json({ error: "name is required" });
@@ -54,9 +62,9 @@ app.post("/api/rooms", async (req: Request, res: Response) => {
   });
 
   res.json({ roomId, shortCode });
-});
+}));
 
-app.post("/api/rooms/join", async (req: Request, res: Response) => {
+app.post("/api/rooms/join", asyncHandler(async (req: Request, res: Response) => {
   const { userId, name, shortCode } = req.body as {
     userId?: string;
     name?: string;
@@ -92,9 +100,9 @@ app.post("/api/rooms/join", async (req: Request, res: Response) => {
     .transaction((cur: number | null) => (typeof cur === "number" ? cur : 0));
 
   res.json({ roomId });
-});
+}));
 
-app.post("/api/rooms/:roomId/start", async (req: Request, res: Response) => {
+app.post("/api/rooms/:roomId/start", asyncHandler(async (req: Request, res: Response) => {
   const { roomId } = req.params;
   const { userId } = req.body as { userId?: string };
   if (!userId) return res.status(400).json({ error: "userId is required" });
@@ -133,9 +141,9 @@ app.post("/api/rooms/:roomId/start", async (req: Request, res: Response) => {
   });
 
   res.json({ ok: true, roundId });
-});
+}));
 
-app.post("/api/rooms/:roomId/play", async (req: Request, res: Response) => {
+app.post("/api/rooms/:roomId/play", asyncHandler(async (req: Request, res: Response) => {
   const { roomId } = req.params;
   const { userId, choice } = req.body as { userId?: string; choice?: GameMove };
   if (!userId) return res.status(400).json({ error: "userId is required" });
@@ -207,15 +215,21 @@ app.post("/api/rooms/:roomId/play", async (req: Request, res: Response) => {
   });
 
   res.json({ ok: true, completedRound: true, winnerId, matchFinished, matchWinnerId });
-});
+}));
 
-app.get("/api/rooms/:roomId", async (req: Request, res: Response) => {
+app.get("/api/rooms/:roomId", asyncHandler(async (req: Request, res: Response) => {
   const { roomId } = req.params;
   const db = getDatabase();
   const snap = await db.ref(`rooms/${roomId}`).get();
   const room = snap.val();
   if (!room) return res.status(404).json({ error: "room not found" });
   res.json(room);
+}));
+
+app.use((err: any, _req: Request, res: Response, _next: any) => {
+  const message = err instanceof Error ? err.message : String(err);
+  const stack = err instanceof Error ? err.stack : undefined;
+  res.status(500).json({ error: message, stack });
 });
 
 export default app;

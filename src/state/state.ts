@@ -17,6 +17,20 @@ type OnlineRoom = {
  const defaultApiBaseUrl = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
  const apiBaseUrl = String(process.env.API_BASE_URL || defaultApiBaseUrl).replace(/\/$/, "");
 
+ async function readApiResponse(res: Response) {
+   const contentType = res.headers.get("content-type") || "";
+   const isJson = contentType.includes("application/json");
+   if (isJson) {
+     return await res.json();
+   }
+   const text = await res.text();
+   try {
+     return JSON.parse(text);
+   } catch {
+     return { error: text || res.statusText };
+   }
+ }
+
 type State = {
   currentGame: {
     playerPlay: GameMove;
@@ -126,8 +140,8 @@ const state = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error creating user");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error creating user (${res.status})`);
 
     currentState.online.userId = data.userId;
     currentState.online.name = name;
@@ -141,8 +155,8 @@ const state = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentState.online.userId, name: currentState.online.name }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error creating room");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error creating room (${res.status})`);
 
     currentState.online.roomId = data.roomId;
     currentState.online.shortCode = data.shortCode;
@@ -161,8 +175,8 @@ const state = {
         shortCode,
       }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error joining room");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error joining room (${res.status})`);
 
     currentState.online.roomId = data.roomId;
     currentState.online.shortCode = shortCode;
@@ -175,8 +189,8 @@ const state = {
     if (!currentState.online.roomId) throw new Error("Missing roomId");
 
     const res = await fetch(`${currentState.online.apiBaseUrl}/api/rooms/${currentState.online.roomId}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error fetching room");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error fetching room (${res.status})`);
 
     currentState.online.room = data;
     this.setState(currentState);
@@ -192,8 +206,8 @@ const state = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentState.online.userId }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error starting game");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error starting game (${res.status})`);
 
     await this.fetchRoom();
   },
@@ -213,8 +227,8 @@ const state = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentState.online.userId, choice }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error playing");
+    const data = await readApiResponse(res);
+    if (!res.ok) throw new Error(data?.error || `Error playing (${res.status})`);
 
     await this.fetchRoom();
   },
