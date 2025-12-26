@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Rock Paper Scissors game built with TypeScript and Parcel.",
   "homepage": "https://JorgeAA78.github.io/gh-page-ppt",
+  "workspaces": [
+    "server"
+  ],
   "scripts": {
     "dev": "parcel src/index.html --open",
     "start": "parcel src/index.html --open",

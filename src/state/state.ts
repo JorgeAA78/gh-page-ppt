@@ -14,6 +14,9 @@ type OnlineRoom = {
   lastResult?: any;
 };
 
+ const defaultApiBaseUrl = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
+ const apiBaseUrl = String(process.env.API_BASE_URL || defaultApiBaseUrl).replace(/\/$/, "");
+
 type State = {
   currentGame: {
     playerPlay: GameMove;
@@ -41,7 +44,7 @@ const state = {
     },
     history: { player: 0, computer: 0 },
     online: {
-      apiBaseUrl: "http://localhost:3001",
+      apiBaseUrl,
       userId: "",
       name: "",
       roomId: "",
