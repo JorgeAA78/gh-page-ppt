@@ -49,6 +49,7 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
         <p class="score-p">Máquina: ${currentState.history.computer}</p>
       </div>
       <button-el class="play-again-button">${buttonText}</button-el>
+      ${finalResult ? `<button-el class="menu-button">Volver al menú</button-el>` : ''}
     </div>
   `;
 
@@ -93,6 +94,9 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
     .play-again-button {
       width: 260px;
     }
+    .menu-button {
+      width: 260px;
+    }
     .confetti {
       position: absolute;
       top: 0;
@@ -117,6 +121,18 @@ export function initResultPage(params: { goTo: (path: string) => void }) {
         state.resetHistory();
       }
       params.goTo('/play');
+    });
+  }
+
+  const menuButton = div.querySelector('.menu-button');
+  if (menuButton) {
+    menuButton.addEventListener('click', () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      state.resetHistory();
+      params.goTo('/welcome');
     });
   }
 

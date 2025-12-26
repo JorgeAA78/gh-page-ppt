@@ -9,7 +9,7 @@ export function initOnlineJoinRoomPage(params: { goTo: (path: string) => void })
 
       <label class="label">
         Tu nombre
-        <input class="input name" type="text" placeholder="Facu" />
+        <input class="input name" type="text" placeholder="Facundo" />
       </label>
 
       <label class="label">
