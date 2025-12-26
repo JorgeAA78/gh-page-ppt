@@ -14,14 +14,22 @@ class Button extends HTMLElement {
     style.innerHTML = `
       .button {
         width: 100%;
-        height: 87px;
+        min-height: 87px;
         background-color: #006CFC;
         border: 10px solid #001997;
         border-radius: 10px;
         font-family: 'Odibee Sans', cursive;
-        font-size: 45px;
+        font-size: clamp(28px, 7vw, 45px);
+        line-height: 1.05;
         color: white;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 14px;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
       }
     `;
 
